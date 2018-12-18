@@ -18,25 +18,20 @@ import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
-
-
+    var txtView : TextView? = findViewById<TextView>(R.id.lblPosition)
+    val sensorManager: SensorManager? = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    var sensorPosition: Sensor? = null
+    var positionNumber : Float = 0.0f
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-
-
-        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER)
-        {
-            var axisX: Float = event.values[0]
-            var axisY: Float = event.values[1]
-            var axisZ: Float = event.values[2]
-            if (event.values[0] == axisX){
-            lblPosition.text = "arriba"
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            lblPosition.text = event.values[0].toString()
             }
-            }
-    }
+        }
+
 
     override fun onResume() {
         super.onResume()
@@ -47,18 +42,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        var txtView : TextView? = findViewById<TextView>(R.id.lblPosition)
-        val sensorManager: SensorManager? = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        //var sensorManager : SensorManager? = null
-        var sensorPosition: Sensor? = null
-        //var lblPosicion = getText(ById(R.id.lblPosition)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        if (sensorManager!!.getSensorList(Sensor.TYPE_LIGHT) != null) {
-            sensorPosition = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        if (sensorManager?.getSensorList(Sensor.TYPE_LIGHT) != null) {
+            sensorPosition = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
         } else
             Toast.makeText(this, "Acelerometro no disponible", Toast.LENGTH_SHORT).show()
